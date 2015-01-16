@@ -1,0 +1,37 @@
+<atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}" />
+        <param name="plugin-icon">images/pluginIcon.png</param>
+        <param name="plugin-logo">images/pluginLogo.png</param>
+    </plugin-info>
+
+    <!-- add our i18n resource -->
+    <resource type="i18n" name="i18n" location="fiksu-issue-created-emailer"/>
+    
+    <!-- add our web resources -->
+    <web-resource key="fiksu-issue-created-emailer-resources" name="fiksu-issue-created-emailer Web Resources">
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
+        
+        <resource type="download" name="fiksu-issue-created-emailer.css" location="/css/fiksu-issue-created-emailer.css"/>
+        <resource type="download" name="fiksu-issue-created-emailer.js" location="/js/fiksu-issue-created-emailer.js"/>
+        <resource type="download" name="images/" location="/images"/>
+
+        <context>fiksu-issue-created-emailer</context>
+    </web-resource>
+    
+    <!-- publish our component -->
+    <component key="myPluginComponent" class="com.fiksu.jira.plugins.MyPluginComponentImpl" public="true">
+        <interface>com.fiksu.jira.plugins.MyPluginComponent</interface>
+    </component>
+    
+    <!-- import from the product container -->
+    <component-import key="applicationProperties" interface="com.atlassian.sal.api.ApplicationProperties" />
+
+    <component-import key="eventPublisher" interface="com.atlassian.event.api.EventPublisher"/>
+    <component key="eventListener" class="com.fiksu.jira.plugins.IssueCreatedListener">
+        <description>Class that processes the incoming JIRA issue events and emails reporter</description>
+    </component>
+
+</atlassian-plugin>
